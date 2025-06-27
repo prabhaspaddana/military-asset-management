@@ -155,7 +155,7 @@ export default function AssignmentsPage() {
     }
   };
 
-  const canCreate = user && (user.role === 'Admin' || user.role === 'Base Commander');
+  const canCreate = user && (user.role === 'admin' || user.role === 'commander');
 
   return (
     <SidebarLayout>
