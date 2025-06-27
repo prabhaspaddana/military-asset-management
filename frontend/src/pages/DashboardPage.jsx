@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SidebarLayout from '../components/SidebarLayout';
 
 const ASSET_TYPES = ['vehicle', 'weapon', 'ammunition', 'equipment'];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function DashboardPage() {
   const [metrics, setMetrics] = useState(null);
@@ -20,7 +21,7 @@ export default function DashboardPage() {
     const fetchBases = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/bases', {
+        const res = await axios.get(`${API_BASE_URL}/api/bases`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setBases(res.data.data);
@@ -45,7 +46,7 @@ export default function DashboardPage() {
           params.startDate = filters.startDate;
           params.endDate = filters.endDate;
         }
-        const res = await axios.get('http://localhost:5000/api/dashboard/metrics', {
+        const res = await axios.get(`${API_BASE_URL}/api/dashboard/metrics`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -70,7 +71,7 @@ export default function DashboardPage() {
         params.startDate = filters.startDate;
         params.endDate = filters.endDate;
       }
-      const res = await axios.get('http://localhost:5000/api/dashboard/movement-breakdown', {
+      const res = await axios.get(`${API_BASE_URL}/api/dashboard/movement-breakdown`, {
         headers: { Authorization: `Bearer ${token}` },
         params
       });

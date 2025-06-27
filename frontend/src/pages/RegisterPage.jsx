@@ -23,6 +23,7 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,7 +37,7 @@ export default function RegisterPage() {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/api/auth/register', form);
+      await axios.post(`${API_BASE_URL}/api/auth/register`, form);
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');

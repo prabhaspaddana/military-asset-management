@@ -4,6 +4,7 @@ import SidebarLayout from '../components/SidebarLayout';
 import { useAuth } from '../context/AuthContext';
 
 const ASSET_TYPES = ['vehicle', 'weapon', 'ammunition', 'equipment'];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function PurchasesPage() {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ export default function PurchasesPage() {
     const fetchBases = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/bases', {
+        const res = await axios.get(`${API_BASE_URL}/api/bases`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setBases(res.data.data);
@@ -60,7 +61,7 @@ export default function PurchasesPage() {
           params.startDate = filters.startDate;
           params.endDate = filters.endDate;
         }
-        const res = await axios.get('http://localhost:5000/api/purchases', {
+        const res = await axios.get(`${API_BASE_URL}/api/purchases`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -108,7 +109,7 @@ export default function PurchasesPage() {
         purchaseOrder: { number: form.poNumber, date: form.date },
         notes: form.notes
       };
-      await axios.post('http://localhost:5000/api/purchases', payload, {
+      await axios.post(`${API_BASE_URL}/api/purchases`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Purchase recorded successfully!');

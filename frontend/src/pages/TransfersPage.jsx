@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 const ASSET_TYPES = ['vehicle', 'weapon', 'ammunition', 'equipment'];
 const PRIORITIES = ['low', 'medium', 'high', 'urgent'];
 const TRANSPORT_METHODS = ['ground', 'air', 'sea'];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function TransfersPage() {
   const { user } = useAuth();
@@ -33,7 +34,7 @@ export default function TransfersPage() {
     const fetchBases = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/bases', {
+        const res = await axios.get(`${API_BASE_URL}/api/bases`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setBases(res.data.data);
@@ -55,7 +56,7 @@ export default function TransfersPage() {
       try {
         const token = localStorage.getItem('token');
         const params = { baseId: form.fromBase, assetType: form.assetType };
-        const res = await axios.get('http://localhost:5000/api/assignments/available-assets', {
+        const res = await axios.get(`${API_BASE_URL}/api/assignments/available-assets`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -82,7 +83,7 @@ export default function TransfersPage() {
           params.startDate = filters.startDate;
           params.endDate = filters.endDate;
         }
-        const res = await axios.get('http://localhost:5000/api/transfers', {
+        const res = await axios.get(`${API_BASE_URL}/api/transfers`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -131,7 +132,7 @@ export default function TransfersPage() {
         reason: form.reason,
         notes: form.notes
       };
-      await axios.post('http://localhost:5000/api/transfers', payload, {
+      await axios.post(`${API_BASE_URL}/api/transfers`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Transfer created successfully!');

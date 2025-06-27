@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 const ASSET_TYPES = ['vehicle', 'weapon', 'ammunition', 'equipment'];
 const CONDITIONS = ['excellent', 'good', 'fair', 'poor'];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function AssignmentsPage() {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ export default function AssignmentsPage() {
       try {
         const token = localStorage.getItem('token');
         const params = { assetType: form.assetType };
-        const res = await axios.get('http://localhost:5000/api/assignments/available-assets', {
+        const res = await axios.get(`${API_BASE_URL}/api/assignments/available-assets`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -54,7 +55,7 @@ export default function AssignmentsPage() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/assignments/users/available', {
+        const res = await axios.get(`${API_BASE_URL}/api/assignments/users/available`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUsers(res.data.data);
@@ -81,7 +82,7 @@ export default function AssignmentsPage() {
           params.startDate = filters.startDate;
           params.endDate = filters.endDate;
         }
-        const res = await axios.get('http://localhost:5000/api/assignments', {
+        const res = await axios.get(`${API_BASE_URL}/api/assignments`, {
           headers: { Authorization: `Bearer ${token}` },
           params
         });
@@ -124,7 +125,7 @@ export default function AssignmentsPage() {
         condition: { assigned: form.condition },
         notes: form.notes
       };
-      await axios.post('http://localhost:5000/api/assignments', payload, {
+      await axios.post(`${API_BASE_URL}/api/assignments`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Asset assigned successfully!');
@@ -142,7 +143,7 @@ export default function AssignmentsPage() {
     setSuccess('');
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`http://localhost:5000/api/assignments/${expending}/expend`, expendForm, {
+      await axios.patch(`${API_BASE_URL}/api/assignments/${expending}/expend`, expendForm, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Asset marked as expended!');
