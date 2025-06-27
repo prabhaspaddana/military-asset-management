@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -9,6 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +18,13 @@ export default function LoginPage() {
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
-      // In a real app, decode token to get role and call login(role) here
+      login({
+        _id: res.data._id,
+        name: res.data.name,
+        role: res.data.role,
+        rank: res.data.rank,
+        department: res.data.department
+      });
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
